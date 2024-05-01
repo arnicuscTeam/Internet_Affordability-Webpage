@@ -45,7 +45,7 @@ def get_possible_values(data_dir: str, column: str) -> list:
     cost_data = pd.read_csv(data_dir + "cost_data/cleaned_cost_data.csv")
     
     # Get the possible values
-    possible_values = cost_data[column].unique()
+    possible_values = cost_data[column].unique().tolist()
     
     return possible_values
 
