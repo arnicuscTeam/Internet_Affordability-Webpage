@@ -104,7 +104,6 @@ if st.button('Submit'):
     
     if price is None:
         st.write('No plans found for the selected criteria.')
-        bottom_text = False
         
     else:
     
