@@ -1,3 +1,3 @@
-# ACP Eligibility Webpage
+# Internet Affordability Webpage
 
-https://acp-eligibility.streamlit.app/
+https://internet-affordability.streamlit.app/

@@ -54,6 +54,8 @@ data_directory = "Data/"
 
 # List of geographies
 states = get_possible_values(data_directory, "State")
+states.remove("PUERTO RICO")
+
 techs = get_possible_values(data_directory, "Technology")
 down_speeds = get_possible_values(data_directory, "Download Bandwidth Mbps")
 up_speeds = get_possible_values(data_directory, "Upload Bandwidth Mbps")
