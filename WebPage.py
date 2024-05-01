@@ -97,8 +97,7 @@ bottom_text = True
 df = pd.DataFrame()
 
 # Submit button
-st.subheader('Download Data')
-if st.button('Submit'):
+if st.button('Run Query'):
     
     price = collect_min_price(data_directory, state, tech, down_speed, up_speed, usage_allowance)
     
