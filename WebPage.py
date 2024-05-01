@@ -108,10 +108,7 @@ if st.button('Submit'):
                 data_directory, state, aian, asian, black, nhpi, white, hispanic, veteran, elderly,
                 disability, not_eng_very_well
                 )
-        print(results)
-        
         for key, value in results.items():
-            print(key, value)
             
             st.write(f'The average monthly income for {key} is ${round(value, 2)}.')
             st.write(f'The percentage of income spent on the selected plan for {key} is'
