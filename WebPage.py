@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import streamlit as st
 from Code.Cost_Data.cost_data import get_possible_values, collect_min_price
@@ -101,23 +102,29 @@ if st.button('Submit'):
     
     price = collect_min_price(data_directory, state, tech, down_speed, up_speed, usage_allowance)
     
-    st.write(f'The lowest price for the selected plan is ${price}.')
-    st.text("")
-    
-    if aian or asian or black or nhpi or white or hispanic or veteran or elderly or disability or not_eng_very_well:
+    if price is None:
+        st.write('No plans found for the selected criteria.')
+        bottom_text = False
         
-        results = filter_pums_data(
-                data_directory, state, aian, asian, black, nhpi, white, hispanic, veteran, elderly,
-                disability, not_eng_very_well
-                )
-        for key, value in results.items():
+    else:
+    
+        st.write(f'The lowest price for the selected plan is ${price}.')
+        st.text("")
+        
+        if aian or asian or black or nhpi or white or hispanic or veteran or elderly or disability or not_eng_very_well:
             
-            st.write(f'The average monthly income for {key} is ${round(value, 2)}.')
-            st.write(f'The percentage of income spent on the selected plan for {key} is'
-                     f' {round((price / value) * 100, 2)}%.')
-            
-            st.text("")
-            st.text("")
+            results = filter_pums_data(
+                    data_directory, state, aian, asian, black, nhpi, white, hispanic, veteran, elderly,
+                    disability, not_eng_very_well
+                    )
+            for key, value in results.items():
+                
+                st.write(f'The average monthly income for {key} is ${round(value, 2)}.')
+                st.write(f'The percentage of income spent on the selected plan for {key} is'
+                         f' {round((price / value) * 100, 2)}%.')
+                
+                st.text("")
+                st.text("")
 
 if bottom_text:
     

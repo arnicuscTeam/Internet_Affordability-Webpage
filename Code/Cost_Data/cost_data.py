@@ -50,7 +50,8 @@ def get_possible_values(data_dir: str, column: str) -> list:
     return possible_values
 
 
-def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed, usage_allowance: str) -> float:
+def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed, usage_allowance: str) -> (
+        float or None):
     
     """
     This function selects the plans based on the given parameters.
@@ -84,5 +85,8 @@ def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed
     
     # Find the lowest price
     lowest_price = cost_data["Total Charge"].min()
+    
+    if cost_data.empty:
+        return None
     
     return lowest_price
