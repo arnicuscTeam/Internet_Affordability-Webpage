@@ -76,24 +76,27 @@ def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed
         if usage_allowance == np.inf:
             cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
                                   (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
                                   (cost_data["Usage Allowance GB"] == np.inf)]
         else:
             cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
                                   (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
                                   (cost_data["Usage Allowance GB"] >= usage_allowance)]
     else:
         if usage_allowance == np.inf:
             cost_data = cost_data[(cost_data["State"] == state) &
                                   (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
                                   (cost_data["Usage Allowance GB"] == np.inf)]
         else:
             cost_data = cost_data[(cost_data["State"] == state) &
                                   (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
                                   (cost_data["Usage Allowance GB"] >= usage_allowance)]
+    
+    if cost_data.empty:
+        return None, None
     
     # Find the lowest price
     lowest_price = cost_data["Total Charge"].min()
@@ -101,8 +104,5 @@ def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed
     tech_df = cost_data[(cost_data["Total Charge"] == lowest_price)]
     
     tech = tech_df["Technology"].iloc[0]
-    
-    if cost_data.empty:
-        return None, None
     
     return lowest_price, tech
