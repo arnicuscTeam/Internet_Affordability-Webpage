@@ -124,6 +124,18 @@ if st.button('Run Query'):
                 
                 st.text("")
                 st.text("")
+                
+        else:
+        
+            results = filter_pums_data(data_directory, state, aian, asian, black, nhpi, white, hispanic, veteran,
+                                       elderly, disability, not_eng_very_well)
+            
+            st.write(f'The average monthly income for the total population is ${round(results["Total Population"], 2)}.')
+            st.write(f'The percentage of income spent on the selected plan for the total population is'
+                     f' {round((price / results["Total Population"]) * 100, 2)}%.')
+            
+            st.text("")
+            st.text("")
 
 if bottom_text:
     

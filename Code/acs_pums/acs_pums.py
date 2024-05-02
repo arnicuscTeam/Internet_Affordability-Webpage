@@ -77,18 +77,25 @@ def filter_pums_data(
     
     results = {}
     
-    for population_name, population_var in covered_populations:
-    
-        if locals()[population_var] == 1:
+    if aian or asian or black or nhpi or white or hispanic or veteran or elderly or disability or not_eng_very_well:
+        for population_name, population_var in covered_populations:
         
-            pop_df = df[df[population_name] == 1]
+            if locals()[population_var] == 1:
             
-            income = np.average(pop_df["HH Income"], weights = pop_df["WGTP"])
-            
-            col_name = name_mapping[population_var]
-            
-            results[col_name] = income / 12
+                pop_df = df[df[population_name] == 1]
+                
+                income = np.average(pop_df["HH Income"], weights = pop_df["WGTP"])
+                
+                col_name = name_mapping[population_var]
+                
+                results[col_name] = income / 12
+                
+    else:
     
+        income = np.average(df["HH Income"], weights = df["WGTP"])
+        
+        results["Total Population"] = income / 12
+        
     return results
 
 
