@@ -58,6 +58,8 @@ states = get_possible_values(data_directory, "State")
 states.remove("PUERTO RICO")
 
 techs = get_possible_values(data_directory, "Technology")
+techs.append("All Technologies")
+
 down_speeds = get_possible_values(data_directory, "Download Bandwidth Mbps")
 up_speeds = get_possible_values(data_directory, "Upload Bandwidth Mbps")
 usage_allowances = get_possible_values(data_directory, "Usage Allowance GB")
@@ -100,14 +102,14 @@ df = pd.DataFrame()
 st.text("")
 if st.button('Run Query'):
     
-    price = collect_min_price(data_directory, state, tech, down_speed, up_speed, usage_allowance)
+    price, technology = collect_min_price(data_directory, state, tech, down_speed, up_speed, usage_allowance)
     
     if price is None:
         st.write('No plans found for the selected criteria.')
         
     else:
     
-        st.write(f'The lowest price for the selected plan is ${price}.')
+        st.write(f'The lowest price for the selected plan is ${price} for {technology}.')
         st.text("")
         
         if aian or asian or black or nhpi or white or hispanic or veteran or elderly or disability or not_eng_very_well:

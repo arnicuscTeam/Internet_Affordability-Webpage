@@ -51,7 +51,7 @@ def get_possible_values(data_dir: str, column: str) -> list:
 
 
 def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed, usage_allowance: str) -> (
-        float or None):
+        tuple[float] or None):
     
     """
     This function selects the plans based on the given parameters.
@@ -72,21 +72,37 @@ def collect_min_price(data_dir: str, state: str, tech: str, down_speed, up_speed
     cost_data = pd.read_csv(data_dir + "cost_data/cleaned_cost_data.csv")
     
     # Filter the data
-    if usage_allowance == np.inf:
-        cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
-                              (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
-                              (cost_data["Usage Allowance GB"] == np.inf)]
+    if tech != "All Technologies":
+        if usage_allowance == np.inf:
+            cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
+                                  (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
+                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                  (cost_data["Usage Allowance GB"] == np.inf)]
+        else:
+            cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
+                                  (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
+                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                  (cost_data["Usage Allowance GB"] >= usage_allowance)]
     else:
-        cost_data = cost_data[(cost_data["State"] == state) & (cost_data["Technology"] == tech) &
-                              (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
-                                          cost_data["Upload Bandwidth Mbps"] >= up_speed) &
-                              (cost_data["Usage Allowance GB"] >= usage_allowance)]
+        if usage_allowance == np.inf:
+            cost_data = cost_data[(cost_data["State"] == state) &
+                                  (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
+                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                  (cost_data["Usage Allowance GB"] == np.inf)]
+        else:
+            cost_data = cost_data[(cost_data["State"] == state) &
+                                  (cost_data["Download Bandwidth Mbps"] >= down_speed) & (
+                                              cost_data["Upload Bandwidth Mbps"] >= up_speed) &
+                                  (cost_data["Usage Allowance GB"] >= usage_allowance)]
     
     # Find the lowest price
     lowest_price = cost_data["Total Charge"].min()
     
-    if cost_data.empty:
-        return None
+    tech_df = cost_data[(cost_data["Total Charge"] == lowest_price)]
     
-    return lowest_price
+    tech = tech_df["Technology"].iloc[0]
+    
+    if cost_data.empty:
+        return None, None
+    
+    return lowest_price, tech
