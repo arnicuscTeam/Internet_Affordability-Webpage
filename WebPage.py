@@ -56,6 +56,7 @@ data_directory = "Data/"
 # List of geographies
 states = get_possible_values(data_directory, "State")
 states.remove("PUERTO RICO")
+states.remove("DISTRICT OF COLUMBIA")
 
 techs = get_possible_values(data_directory, "Technology")
 techs.append("All Technologies")
