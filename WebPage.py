@@ -60,9 +60,11 @@ states.remove("PUERTO RICO")
 techs = get_possible_values(data_directory, "Technology")
 techs.append("All Technologies")
 
-down_speeds = get_possible_values(data_directory, "Download Bandwidth Mbps")
-up_speeds = get_possible_values(data_directory, "Upload Bandwidth Mbps")
-usage_allowances = get_possible_values(data_directory, "Usage Allowance GB")
+down_speeds = [3, 5, 10, 25, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000]
+
+up_speeds = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000]
+
+usage_allowances = [0, 100, 250, 500, 1000, 2000, 5000, 10000]
 
 # Collect the states
 state = st.selectbox('Select State', states)
@@ -71,13 +73,13 @@ state = st.selectbox('Select State', states)
 tech = st.selectbox('Select Technology', techs)
 
 # Collect the min download speed
-down_speed = st.slider('Select Minimum Download Speed', min_value = 0, max_value = 500)
+down_speed = st.selectbox('Select Minimum Download Speed', down_speeds)
 
 # Collect the min upload speed
-up_speed = st.slider('Select Minimum Upload Speed', min_value = 0, max_value = 500)
+up_speed = st.selectbox('Select Minimum Upload Speed', up_speeds)
 
 # Collect the min usage allowance
-usage_allowance = st.slider('Select Minimum Usage Allowance (0 for unlimited)', min_value = 0, max_value = 1000)
+usage_allowance = st.selectbox('Select Minimum Usage Allowance (0 for unlimited)', usage_allowances)
 
 # Demographic Criteria
 st.subheader('Sub-Populations')
@@ -133,8 +135,8 @@ if st.button('Run Query'):
                                        elderly, disability, not_eng_very_well)
             
             st.write(f'The average monthly income for the total population is ${round(results["Total Population"], 2)}.')
-            st.write(f'The percentage of income spent on the selected plan for the total population is'
-                     f' {round((price / results["Total Population"]) * 100, 2)}%.')
+            st.write(f'The percentage of income spent on the selected plan for the total population in {state.title()} '
+                     f'is {round((price / results["Total Population"]) * 100, 2)}%.')
             
             st.text("")
             st.text("")
